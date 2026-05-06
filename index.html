@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Durairaj V — Cybersecurity Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --g:#00ff88;
+  --g2:#00cc66;
+  --g3:#004422;
+  --r:#ff003c;
+  --c:#00eeff;
+  --y:#ffcc00;
+  --bg:#010a05;
+  --bg2:#020f07;
+  --panel:rgba(0,255,136,0.03);
+  --border:rgba(0,255,136,0.12);
+}
+
+html,body{width:100%;min-height:100vh;overflow-x:hidden;background:var(--bg);color:var(--g);font-family:'Share Tech Mono',monospace;cursor:none;}
+
+/* CUSTOM CURSOR */
+#cur{position:fixed;z-index:9999;pointer-events:none;transition:transform .1s;}
+#cur .ring{width:32px;height:32px;border:1.5px solid var(--g);border-radius:50%;position:absolute;transform:translate(-50%,-50%);box-shadow:0 0 15px var(--g),inset 0 0 8px rgba(0,255,136,.1);animation:ring-pulse 2s ease-in-out infinite;}
+#cur .dot{width:5px;height:5px;background:var(--g);border-radius:50%;position:absolute;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--g);}
+#cur .crossh,#cur .crossv{position:absolute;background:var(--g);opacity:.5;transform:translate(-50%,-50%);}
+#cur .crossh{width:20px;height:1px;}
+#cur .crossv{width:1px;height:20px;}
+@keyframes ring-pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1;}50%{transform:translate(-50%,-50%) scale(1.3);opacity:.6;}}
+
+/* BG LAYERS */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;}
+#hex-grid{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34L28 66zM28 100L0 84V50l28-16 28 16v34L28 100z' fill='none' stroke='%2300ff88' stroke-width='.5'/%3E%3C/svg%3E");}
+#scan-line{position:fixed;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,transparent,rgba(0,255,136,.6),transparent);z-index:2;animation:scan 4s linear infinite;pointer-events:none;}
+@keyframes scan{0%{top:-3px;}100%{top:100vh;}}
+#vignette{position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.9) 100%);z-index:3;pointer-events:none;}
+#scanlines{position:fixed;inset:0;z-index:4;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);pointer-events:none;}
+
+/* MAIN CONTENT */
+#content{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;}
+
+/* TOP HUD BAR */
+#hud{display:flex;justify-content:space-between;align-items:center;padding:14px 32px;border-bottom:1px solid var(--border);background:rgba(0,10,5,.6);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;}
+.hud-logo{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;letter-spacing:5px;color:var(--g);text-shadow:0 0 20px var(--g),0 0 40px rgba(0,255,136,.3);animation:glitch 5s infinite;}
+@keyframes glitch{
+  0%,88%,100%{text-shadow:0 0 20px var(--g),0 0 40px rgba(0,255,136,.3);filter:none;}
+  89%{filter:drop-shadow(-2px 0 var(--r)) drop-shadow(2px 0 var(--c));}
+  90%{filter:none;}
+  91%{filter:drop-shadow(2px 0 var(--r)) drop-shadow(-2px 0 var(--c));}
+  92%{filter:none;}
+}
+.hud-right{display:flex;gap:20px;align-items:center;font-size:11px;color:var(--g2);}
+.hud-stat{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.hud-val{font-family:'Orbitron',monospace;font-size:14px;color:var(--g);font-weight:700;}
+.hud-lbl{font-size:8px;letter-spacing:2px;opacity:.6;}
+.status-pill{display:flex;align-items:center;gap:6px;border:1px solid var(--border);padding:4px 10px;border-radius:2px;font-size:10px;letter-spacing:2px;}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.1;}}
+
+/* HERO SECTION */
+#hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center;position:relative;}
+
+.hero-badge{font-size:10px;letter-spacing:4px;color:var(--c);border:1px solid rgba(0,238,255,.2);padding:5px 16px;border-radius:2px;margin-bottom:24px;background:rgba(0,238,255,.03);animation:fadein 1s ease forwards;}
+@keyframes fadein{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:none;}}
+
+.hero-name{font-family:'Orbitron',monospace;font-size:clamp(40px,8vw,90px);font-weight:900;letter-spacing:8px;line-height:1;margin-bottom:10px;background:linear-gradient(135deg,var(--g),var(--c),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 30px rgba(0,255,136,.4));animation:fadein 1.2s ease forwards;}
+
+.hero-sub{font-family:'Rajdhani',sans-serif;font-size:clamp(14px,2.5vw,22px);letter-spacing:6px;color:rgba(0,255,136,.5);margin-bottom:40px;font-weight:300;animation:fadein 1.4s ease forwards;}
+
+/* TYPING TEXT */
+.typing-wrap{font-size:clamp(13px,2vw,18px);color:var(--c);margin-bottom:50px;height:28px;display:flex;align-items:center;gap:8px;animation:fadein 1.6s ease forwards;}
+.typing-prefix{color:var(--g2);}
+#typed{color:var(--g);}
+.typed-cursor{display:inline-block;width:2px;height:1.1em;background:var(--g);animation:blink .8s infinite;vertical-align:middle;box-shadow:0 0 8px var(--g);}
+
+/* SKILL HEXAGONS */
+.hex-grid-skills{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:60px;max-width:700px;animation:fadein 1.8s ease forwards;}
+.hex-skill{width:120px;height:60px;background:var(--panel);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;clip-path:polygon(8% 0%,92% 0%,100% 50%,92% 100%,8% 100%,0% 50%);transition:all .3s;cursor:default;}
+.hex-skill:hover{background:rgba(0,255,136,.08);border-color:var(--g);box-shadow:0 0 20px rgba(0,255,136,.15);transform:scale(1.05);}
+.hex-skill .sk-icon{font-size:20px;}
+.hex-skill .sk-name{font-size:9px;letter-spacing:2px;color:var(--g2);}
+
+/* STATS ROW */
+.stats-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:60px;animation:fadein 2s ease forwards;}
+.stat-box{border:1px solid var(--border);padding:20px 28px;text-align:center;background:var(--panel);position:relative;overflow:hidden;min-width:120px;}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);animation:shimmer 3s infinite;}
+@keyframes shimmer{0%{opacity:0;}50%{opacity:1;}100%{opacity:0;}}
+.stat-box::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(0,255,136,.03));pointer-events:none;}
+.stat-num{font-family:'Orbitron',monospace;font-size:32px;font-weight:900;color:var(--g);text-shadow:0 0 20px var(--g);line-height:1;}
+.stat-lbl{font-size:9px;letter-spacing:3px;color:var(--g2);margin-top:4px;}
+
+/* ROADMAP */
+#roadmap{padding:60px 20px;max-width:900px;margin:0 auto;width:100%;}
+.section-title{font-family:'Orbitron',monospace;font-size:clamp(16px,3vw,24px);letter-spacing:6px;color:var(--g);text-align:center;margin-bottom:40px;position:relative;}
+.section-title::after{content:'';display:block;width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);margin:12px auto 0;}
+
+.phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;}
+.phase{border:1px solid var(--border);padding:20px;background:var(--panel);position:relative;overflow:hidden;transition:all .3s;}
+.phase:hover{border-color:var(--g);background:rgba(0,255,136,.06);transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,255,136,.1);}
+.phase-num{font-family:'Orbitron',monospace;font-size:36px;font-weight:900;color:rgba(0,255,136,.08);position:absolute;top:10px;right:14px;line-height:1;}
+.phase-tag{font-size:8px;letter-spacing:3px;color:var(--c);margin-bottom:8px;}
+.phase-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--g);margin-bottom:12px;letter-spacing:2px;}
+.phase-items{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.phase-items li{font-size:10px;color:rgba(0,255,136,.6);display:flex;gap:6px;align-items:flex-start;}
+.phase-items li::before{content:'›';color:var(--g);font-size:12px;flex-shrink:0;}
+.phase-status{display:inline-block;font-size:8px;letter-spacing:2px;padding:2px 8px;border-radius:1px;margin-bottom:6px;}
+.phase-status.now{background:rgba(0,255,136,.1);color:var(--g);border:1px solid rgba(0,255,136,.3);}
+.phase-status.next{background:rgba(0,238,255,.07);color:var(--c);border:1px solid rgba(0,238,255,.2);}
+.phase-status.soon{background:rgba(255,204,0,.07);color:var(--y);border:1px solid rgba(255,204,0,.2);}
+.phase-status.goal{background:rgba(255,0,60,.07);color:var(--r);border:1px solid rgba(255,0,60,.2);}
+
+/* CONTACT */
+#contact{padding:60px 20px;text-align:center;}
+.connect-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:32px;}
+.connect-btn{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:3px;font-weight:600;padding:12px 24px;border:1px solid var(--border);background:var(--panel);color:var(--g);text-decoration:none;display:flex;align-items:center;gap:8px;transition:all .3s;position:relative;overflow:hidden;}
+.connect-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,255,136,.08),transparent);transition:left .4s;}
+.connect-btn:hover::before{left:100%;}
+.connect-btn:hover{border-color:var(--g);box-shadow:0 0 20px rgba(0,255,136,.15);transform:translateY(-2px);}
+.connect-btn.red{color:var(--r);border-color:rgba(255,0,60,.2);}
+.connect-btn.red:hover{border-color:var(--r);box-shadow:0 0 20px rgba(255,0,60,.15);}
+.connect-btn.cyan{color:var(--c);border-color:rgba(0,238,255,.2);}
+.connect-btn.cyan:hover{border-color:var(--c);box-shadow:0 0 20px rgba(0,238,255,.15);}
+
+/* FOOTER */
+#footer{padding:20px 32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:10px;color:rgba(0,255,136,.3);flex-wrap:wrap;gap:10px;}
+
+/* CORNER DECORATIONS */
+.corners{position:absolute;inset:0;pointer-events:none;}
+.corners::before,.corners::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--g);border-style:solid;opacity:.4;}
+.corners::before{top:8px;left:8px;border-width:1px 0 0 1px;}
+.corners::after{bottom:8px;right:8px;border-width:0 1px 1px 0;}
+
+/* PARTICLE CANVAS */
+#particles{position:fixed;inset:0;z-index:1;pointer-events:none;}
+
+/* GLITCH BAR */
+.glitch-bar{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--g),var(--c),var(--g),transparent);opacity:.3;margin:0;animation:glitch-bar 6s linear infinite;}
+@keyframes glitch-bar{0%,100%{opacity:.3;transform:scaleX(1);}45%{opacity:.8;transform:scaleX(1);}50%{opacity:.1;transform:scaleX(.98);}55%{opacity:.8;transform:scaleX(1);}}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cur">
+  <div class="ring"></div>
+  <div class="dot"></div>
+  <div class="crossh"></div>
+  <div class="crossv"></div>
+</div>
+
+<!-- BACKGROUND LAYERS -->
+<canvas id="bg-canvas"></canvas>
+<canvas id="particles"></canvas>
+<div id="hex-grid"></div>
+<div id="scan-line"></div>
+<div id="vignette"></div>
+<div id="scanlines"></div>
+
+<!-- MAIN CONTENT -->
+<div id="content">
+
+  <!-- HUD TOP BAR -->
+  <div id="hud">
+    <div class="hud-logo">DV//SEC</div>
+    <div class="hud-right">
+      <div class="hud-stat">
+        <div class="hud-val" id="threat-count">000</div>
+        <div class="hud-lbl">THREATS BLOCKED</div>
+      </div>
+      <div class="hud-stat">
+        <div class="hud-val" id="clock">00:00</div>
+        <div class="hud-lbl">LOCAL TIME</div>
+      </div>
+      <div class="status-pill">
+        <div class="pulse-dot"></div>
+        SYSTEM SECURE
+      </div>
+    </div>
+  </div>
+
+  <div class="glitch-bar"></div>
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="hero-badge">// ASPIRING ETHICAL HACKER //</div>
+    <div class="hero-name">DURAIRAJ V</div>
+    <div class="hero-sub">JAVA · LINUX · CYBERSECURITY</div>
+
+    <div class="typing-wrap">
+      <span class="typing-prefix">root@kali:~$</span>
+      <span id="typed"></span>
+      <span class="typed-cursor"></span>
+    </div>
+
+    <!-- SKILL HEX -->
+    <div class="hex-grid-skills">
+      <div class="hex-skill"><span class="sk-icon">☕</span><span class="sk-name">JAVA</span></div>
+      <div class="hex-skill"><span class="sk-icon">🐧</span><span class="sk-name">LINUX</span></div>
+      <div class="hex-skill"><span class="sk-icon">🌐</span><span class="sk-name">NETWORK</span></div>
+      <div class="hex-skill"><span class="sk-icon">🔐</span><span class="sk-name">SEC OPS</span></div>
+      <div class="hex-skill"><span class="sk-icon">🖥️</span><span class="sk-name">HTML/CSS</span></div>
+      <div class="hex-skill"><span class="sk-icon">⚡</span><span class="sk-name">BASH</span></div>
+      <div class="hex-skill"><span class="sk-icon">🎯</span><span class="sk-name">CTF</span></div>
+      <div class="hex-skill"><span class="sk-icon">🛡️</span><span class="sk-name">ETHICAL HACK</span></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-num" id="s1">00</div>
+        <div class="stat-lbl">PROJECTS</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="s2">00</div>
+        <div class="stat-lbl">COMMITS</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="s3">00</div>
+        <div class="stat-lbl">DAYS LEARNING</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">∞</div>
+        <div class="stat-lbl">DETERMINATION</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glitch-bar"></div>
+
+  <!-- ROADMAP -->
+  <div id="roadmap">
+    <div class="section-title">// HACKER ROADMAP //</div>
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-num">01</div>
+        <div class="phase-status now">NOW 🔥</div>
+        <div class="phase-title">FOUNDATION</div>
+        <ul class="phase-items">
+          <li>HTML & CSS ✅</li>
+          <li>Java Fundamentals</li>
+          <li>Linux Commands</li>
+          <li>Networking Basics</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-num">02</div>
+        <div class="phase-status next">NEXT</div>
+        <div class="phase-title">SECURITY BASICS</div>
+        <ul class="phase-items">
+          <li>TryHackMe Paths</li>
+          <li>Bash Scripting</li>
+          <li>Vulnerability Basics</li>
+          <li>Wireshark / Nmap</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-num">03</div>
+        <div class="phase-status soon">COMING SOON</div>
+        <div class="phase-title">HANDS-ON</div>
+        <ul class="phase-items">
+          <li>CTF Competitions</li>
+          <li>HackTheBox Labs</li>
+          <li>OWASP Top 10</li>
+          <li>Penetration Testing</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-num">04</div>
+        <div class="phase-status goal">GOAL 🎯</div>
+        <div class="phase-title">CERTIFIED</div>
+        <ul class="phase-items">
+          <li>CEH / Security+</li>
+          <li>Bug Bounty</li>
+          <li>Open Source Contrib</li>
+          <li>Security Community</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="glitch-bar"></div>
+
+  <!-- CONTACT -->
+  <div id="contact">
+    <div class="section-title">// CONNECT //</div>
+    <div class="connect-links">
+      <a class="connect-btn" href="mailto:durairajv172@gmail.com">📧 GMAIL</a>
+      <a class="connect-btn cyan" href="https://github.com/durairajv172-byte" target="_blank">⚡ GITHUB</a>
+      <a class="connect-btn" href="https://www.linkedin.com/in/duriraj-v-758250406" target="_blank">💼 LINKEDIN</a>
+      <a class="connect-btn red" href="https://tryhackme.com/p/durairajv402" target="_blank">🔐 TRYHACKME</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer">
+    <span>© 2026 DURAIRAJ V // ALL RIGHTS RESERVED</span>
+    <span>"Started from zero, now building towards hacking 🔐"</span>
+    <span>INDIA 🇮🇳</span>
+  </div>
+
+</div>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cur');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top = e.clientY + 'px';
+});
+
+// CLOCK
+function tick() {
+  const n = new Date();
+  document.getElementById('clock').textContent =
+    n.getHours().toString().padStart(2,'0') + ':' +
+    n.getMinutes().toString().padStart(2,'0');
+}
+tick(); setInterval(tick, 1000);
+
+// THREAT COUNTER
+let t = 0;
+setInterval(() => {
+  t += Math.floor(Math.random() * 7 + 1);
+  document.getElementById('threat-count').textContent = String(t).padStart(3,'0');
+}, 300);
+
+// STAT COUNTERS
+function countUp(id, target, duration) {
+  const el = document.getElementById(id);
+  let start = 0;
+  const step = target / (duration / 50);
+  const timer = setInterval(() => {
+    start = Math.min(start + step, target);
+    el.textContent = String(Math.floor(start)).padStart(2,'0');
+    if (start >= target) clearInterval(timer);
+  }, 50);
+}
+setTimeout(() => {
+  countUp('s1', 2, 1000);
+  countUp('s2', 17, 1200);
+  countUp('s3', 30, 1500);
+}, 800);
+
+// TYPING EFFECT
+const phrases = [
+  'whoami → aspiring ethical hacker',
+  'nmap -sV 192.168.1.1',
+  'learning java && linux basics...',
+  'cat /etc/roadmap.txt',
+  'sudo apt install knowledge',
+  'git commit -m "never stop learning"',
+  'echo "Started from zero 🔐"',
+  'ping tryhackme.com -t',
+];
+let pi = 0, ci = 0, deleting = false;
+const typedEl = document.getElementById('typed');
+function typeLoop() {
+  const phrase = phrases[pi];
+  if (!deleting) {
+    typedEl.textContent = phrase.slice(0, ++ci);
+    if (ci === phrase.length) { deleting = true; setTimeout(typeLoop, 2000); return; }
+  } else {
+    typedEl.textContent = phrase.slice(0, --ci);
+    if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+  }
+  setTimeout(typeLoop, deleting ? 30 : 60);
+}
+typeLoop();
+
+// MATRIX RAIN BACKGROUND
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
+const chars = 'アイウエオカキクケコサシスセソ0123456789ABCDEF<>{}[]#@$%^&*|\\';
+const fs = 14;
+let drops = [];
+function initDrops() {
+  drops = Array(Math.floor(canvas.width / fs)).fill(0).map(() => Math.random() * -50);
+}
+initDrops(); window.addEventListener('resize', initDrops);
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(1,10,5,0.055)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < drops.length; i++) {
+    const bright = Math.random() > 0.95;
+    ctx.fillStyle = bright ? '#ffffff' : (Math.random() > 0.7 ? '#00ff88' : '#004422');
+    ctx.font = fs + 'px Share Tech Mono';
+    ctx.globalAlpha = bright ? 0.9 : 0.25 + Math.random() * 0.3;
+    ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fs, drops[i] * fs);
+    ctx.globalAlpha = 1;
+    if (drops[i] * fs > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i] += 0.5;
+  }
+}
+setInterval(drawMatrix, 45);
+
+// FLOATING PARTICLES
+const pCanvas = document.getElementById('particles');
+const pCtx = pCanvas.getContext('2d');
+function resizeP() { pCanvas.width = innerWidth; pCanvas.height = innerHeight; }
+resizeP(); window.addEventListener('resize', resizeP);
+const particles = Array(60).fill(0).map(() => ({
+  x: Math.random() * innerWidth,
+  y: Math.random() * innerHeight,
+  vx: (Math.random() - 0.5) * 0.3,
+  vy: (Math.random() - 0.5) * 0.3,
+  r: Math.random() * 2 + 0.5,
+  a: Math.random(),
+  color: Math.random() > 0.7 ? '
