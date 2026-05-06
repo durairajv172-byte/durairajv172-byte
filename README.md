@@ -7,8 +7,8 @@
 <br/>
 
 ![Profile Views](https://komarev.com/ghpvc/?username=durairajv172-byte&label=Profile%20Views&color=00ff88&style=for-the-badge)
-![GitHub followers](https://img.shields.io/github/followers/durairajv172-byte?label=Followers&style=for-the-badge&color=302b63&labelColor=0f0c29)
-![GitHub stars](https://img.shields.io/github/stars/durairajv172-byte?label=Stars&style=for-the-badge&color=yellow)
+![GitHub followers](https://img.shields.io/github/followers/durairajv172-byte?label=Followers&style=for-the-badge&color=00ff88&labelColor=0a0a0a)
+![GitHub stars](https://img.shields.io/github/stars/durairajv172-byte?label=Stars&style=for-the-badge&color=yellow&labelColor=0a0a0a)
 
 </div>
 
@@ -17,7 +17,7 @@
 ## 🧑‍💻 whoami
 
 <!-- Side image layout: terminal on left, hacker gif on right -->
-<img align="right" alt="Hacking GIF" width="360" src="https://media.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif"/>
+<img align="right" alt="Hacking GIF" width="360" src="https://media.giphy.com/media/f6hnhHkks8bk4jwjh3/giphy.gif"/>
 
 ```bash
 ┌──(durairaj㉿kali)-[~]
@@ -54,7 +54,7 @@
 ## 🌱 Currently Learning
 
 <!-- Learning gif on the right -->
-<img align="right" alt="Coding GIF" width="300" src="https://media.giphy.com/media/L1R1tvI9svkIWwpVYr/giphy.gif"/>
+<img align="right" alt="Coding GIF" width="300" src="https://media.giphy.com/media/LMt9638dO8dftAjtco/giphy.gif"/>
 
 ```
 → ☕ Java Fundamentals
@@ -136,7 +136,7 @@
 
 ## 🗺️ My Hacker Roadmap
 
-<img align="right" alt="Hacker Matrix GIF" width="280" src="https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif"/>
+<img align="right" alt="Hacker Matrix GIF" width="280" src="https://media.giphy.com/media/RDZo7znAdn2u7sAcWH/giphy.gif"/>
 
 ```
 Phase 1 — Foundation (NOW 🔥)
@@ -231,8 +231,8 @@ Phase 4 — Certified (THE GOAL 🎯)
 
 [![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:durairajv172@gmail.com)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/durairajv172-byte)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/durairajv172)
-[![TryHackMe](https://img.shields.io/badge/TryHackMe-212C42?style=for-the-badge&logo=tryhackme&logoColor=white)](https://tryhackme.com/p/durairajv172)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/duriraj-v-758250406)
+[![TryHackMe](https://img.shields.io/badge/TryHackMe-212C42?style=for-the-badge&logo=tryhackme&logoColor=white)](https://tryhackme.com/p/durairajv402)
 [![Portfolio](https://img.shields.io/badge/Portfolio-00ff88?style=for-the-badge&logo=google-chrome&logoColor=black)](https://github.com/durairajv172-byte/personal-protfolio)
 
 </div>
